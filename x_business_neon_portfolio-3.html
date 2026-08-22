@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Discord Server Developer — Portfolio</title>
+<style>
+:root{
+  --bg:#050509;
+  --panel:#0b0c12;
+  --text:#f5f7ff;
+  --muted:#8d92a4;
+  --line:rgba(255,255,255,.10);
+  --purple:#7c3cff;
+  --blue:#28a8ff;
+  --cyan:#26e6ff;
+  --pink:#ff35d0;
+  --green:#36f39a;
+  --orange:#ff8b3d;
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  color:var(--text);
+  background:
+    radial-gradient(circle at 15% 15%,rgba(124,60,255,.12),transparent 28%),
+    radial-gradient(circle at 85% 35%,rgba(38,230,255,.08),transparent 26%),
+    radial-gradient(circle at 50% 90%,rgba(255,53,208,.07),transparent 28%),
+    var(--bg);
+  font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  overflow-x:hidden;
+}
+
+body:before{
+  content:"";
+  position:fixed; inset:0; pointer-events:none; z-index:20;
+  opacity:.16;
+  background-image:
+    linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);
+  background-size:52px 52px;
+  mask-image:linear-gradient(to bottom,black,transparent 80%);
+}
+
+.noise{
+  position:fixed; inset:0; pointer-events:none; z-index:19; opacity:.045;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.8'/%3E%3C/svg%3E");
+}
+
+.lights{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.light{
+  position:absolute;width:520px;height:180px;border-radius:50%;
+  filter:blur(65px);opacity:.16;transform:rotate(-24deg);
+  animation:drift 12s ease-in-out infinite alternate;
+}
+.l1{left:-170px;top:15%;background:#7c3cff}
+.l2{right:-180px;top:42%;background:#24bfff;animation-delay:-4s}
+.l3{left:30%;bottom:-100px;background:#ff2ccf;animation-delay:-7s}
+@keyframes drift{to{transform:translate(80px,40px) rotate(-18deg);opacity:.24}}
+
+.shooting-stars{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+.star{
+  position:absolute;width:130px;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.9),transparent);
+  transform:rotate(-32deg);
+  filter:drop-shadow(0 0 7px #8ecaff);
+  animation:shoot 5.5s linear infinite;
+  opacity:0;
+}
+.star:nth-child(1){top:12%;left:8%;animation-delay:0s}
+.star:nth-child(2){top:25%;left:65%;animation-delay:2s;width:100px}
+.star:nth-child(3){top:58%;left:30%;animation-delay:3.4s;width:150px}
+.star:nth-child(4){top:75%;left:80%;animation-delay:4.2s;width:90px}
+@keyframes shoot{
+  0%{opacity:0;transform:translate(0,0) rotate(-32deg)}
+  8%{opacity:1}
+  20%{opacity:0;transform:translate(-220px,130px) rotate(-32deg)}
+  100%{opacity:0}
+}
+
+nav{
+  position:fixed;top:18px;left:50%;transform:translateX(-50%);
+  width:min(1100px,calc(100% - 32px));z-index:30;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:12px 14px 12px 18px;
+  border:1px solid var(--line);border-radius:18px;
+  background:rgba(8,9,14,.65);backdrop-filter:blur(18px);
+  box-shadow:0 18px 70px rgba(0,0,0,.35), inset 0 1px rgba(255,255,255,.05);
+}
+.brand{font-weight:800;letter-spacing:.02em}
+.brand span{
+  background:linear-gradient(90deg,#fff,#a58aff,#51d9ff);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.navlinks{display:flex;gap:8px}
+.navlinks a{
+  color:#aeb3c4;text-decoration:none;padding:9px 12px;border-radius:10px;
+  font-size:13px;transition:.25s
+}
+.navlinks a:hover{color:#fff;background:rgba(255,255,255,.06)}
+.navbtn{
+  color:#fff;text-decoration:none;font-size:13px;font-weight:700;
+  padding:10px 15px;border-radius:12px;
+  border:1px solid rgba(120,180,255,.25);
+  background:linear-gradient(135deg,rgba(124,60,255,.28),rgba(38,230,255,.12));
+  box-shadow:0 0 28px rgba(124,60,255,.12)
+}
+
+main{position:relative;z-index:1}
+section{width:min(1120px,calc(100% - 36px));margin:auto}
+
+.hero{
+  min-height:850px;display:grid;place-items:center;text-align:center;
+  padding:150px 0 110px;position:relative;
+}
+.hero-orb{
+  position:absolute;width:600px;height:600px;border-radius:50%;
+  background:radial-gradient(circle,rgba(107,69,255,.20),transparent 64%);
+  filter:blur(18px);animation:pulse 5s ease-in-out infinite alternate;
+}
+@keyframes pulse{to{transform:scale(1.08);opacity:.75}}
+.eyebrow{
+  display:inline-flex;gap:8px;align-items:center;
+  border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.035);
+  padding:8px 12px;border-radius:999px;color:#b9bfd1;font-size:12px;
+  box-shadow:inset 0 1px rgba(255,255,255,.06)
+}
+.dot{width:7px;height:7px;border-radius:50%;background:#36f39a;box-shadow:0 0 14px #36f39a}
+h1{
+  max-width:950px;margin:25px auto 18px;
+  font-size:clamp(50px,8vw,100px);line-height:.94;letter-spacing:-.065em;
+  font-weight:850;
+}
+.gradient-text{
+  background:linear-gradient(100deg,#fff 15%,#b28aff 42%,#4bdfff 72%,#fff);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  background-size:200% auto;animation:shine 7s linear infinite;
+}
+@keyframes shine{to{background-position:200% center}}
+.hero p{max-width:650px;margin:0 auto;color:#9499aa;font-size:17px;line-height:1.75}
+.hero-actions{display:flex;justify-content:center;gap:12px;margin-top:32px;flex-wrap:wrap}
+.btn{
+  text-decoration:none;color:#fff;padding:14px 21px;border-radius:14px;
+  font-weight:750;font-size:14px;border:1px solid rgba(255,255,255,.12);
+  transition:.25s;display:inline-flex;align-items:center;gap:8px
+}
+.btn.primary{
+  background:linear-gradient(100deg,#7c3cff,#3b9dff);
+  box-shadow:0 0 40px rgba(105,65,255,.28)
+}
+.btn.secondary{background:rgba(255,255,255,.045)}
+.btn:hover{transform:translateY(-3px);box-shadow:0 15px 40px rgba(0,0,0,.35)}
+
+.section-head{margin:80px 0 30px}
+.kicker{color:#8f79ff;font-size:12px;text-transform:uppercase;letter-spacing:.18em;font-weight:800}
+h2{font-size:clamp(34px,5vw,58px);letter-spacing:-.045em;margin:8px 0}
+.section-head p{color:var(--muted);max-width:620px;line-height:1.7}
+
+.cards{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:18px;
+  perspective:1200px
+}
+.card{
+  min-height:310px;position:relative;overflow:hidden;border-radius:27px;
+  padding:28px;background:linear-gradient(145deg,rgba(20,21,30,.94),rgba(6,7,11,.98));
+  border:1px solid rgba(255,255,255,.11);
+  box-shadow:inset 0 1px rgba(255,255,255,.06),0 25px 70px rgba(0,0,0,.4);
+  transform-style:preserve-3d;transition:transform .35s,border-color .35s
+}
+.card:before{
+  content:"";position:absolute;inset:auto -15% -35% -15%;height:170px;
+  background:var(--glow);filter:blur(30px);opacity:.72
+}
+.card:after{
+  content:"";position:absolute;inset:0;border-radius:inherit;
+  background:linear-gradient(120deg,rgba(255,255,255,.07),transparent 30%);
+  pointer-events:none
+}
+.card:hover{transform:translateY(-8px) rotateX(2deg);border-color:rgba(255,255,255,.2)}
+.icon{
+  width:52px;height:52px;border-radius:16px;display:grid;place-items:center;
+  font-size:22px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.12);
+  box-shadow:0 0 35px var(--glow)
+}
+.card h3{font-size:23px;margin:42px 0 10px;position:relative}
+.card p{color:#858b9e;line-height:1.65;position:relative;font-size:14px}
+.card .arrow{position:absolute;right:25px;bottom:23px;color:#8e94a8}
+.purple{--glow:rgba(177,73,255,.55)}
+.blue{--glow:rgba(42,137,255,.58)}
+.green{--glow:rgba(37,240,148,.52)}
+.orange{--glow:rgba(255,113,44,.50)}
+.pink{--glow:rgba(255,35,188,.50)}
+.cyan{--glow:rgba(35,226,255,.50)}
+
+.showcase{
+  margin-top:100px;display:grid;grid-template-columns:1.1fr .9fr;gap:18px;align-items:stretch
+}
+.panel{
+  position:relative;overflow:hidden;border-radius:30px;padding:32px;
+  min-height:440px;background:rgba(10,11,17,.72);
+  border:1px solid rgba(255,255,255,.10);
+  box-shadow:inset 0 1px rgba(255,255,255,.05),0 30px 90px rgba(0,0,0,.45);
+  backdrop-filter:blur(15px)
+}
+.panel:before{
+  content:"";position:absolute;width:400px;height:200px;right:-130px;bottom:-120px;
+  background:var(--panel-glow);filter:blur(35px);opacity:.7
+}
+.panel h3{font-size:28px;margin:0 0 10px}
+.panel p{color:#858b9e;line-height:1.7;max-width:510px}
+.mockup{
+  position:absolute;left:34px;right:34px;bottom:30px;height:235px;
+  border:1px solid rgba(255,255,255,.12);border-radius:24px;
+  background:linear-gradient(145deg,rgba(31,32,43,.9),rgba(8,9,14,.95));
+  box-shadow:0 25px 60px rgba(0,0,0,.5),0 0 55px var(--panel-glow);
+  transform:perspective(800px) rotateX(5deg) rotateY(-4deg);
+}
+.mock-lines{padding:24px;display:grid;gap:12px}
+.mock-line{height:17px;border-radius:9px;background:rgba(255,255,255,.07)}
+.mock-line:nth-child(1){width:58%;height:26px;background:linear-gradient(90deg,rgba(124,60,255,.5),rgba(38,230,255,.25))}
+.mock-line:nth-child(2){width:85%}
+.mock-line:nth-child(3){width:72%}
+.mock-line:nth-child(4){width:92%}
+.mock-line:nth-child(5){width:45%}
+
+.roles{
+  margin-top:18px;display:grid;grid-template-columns:repeat(2,1fr);gap:10px;
+  position:relative
+}
+.role{
+  display:flex;align-items:center;gap:12px;padding:13px;border-radius:15px;
+  background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.08)
+}
+.role i{width:12px;height:12px;border-radius:50%;box-shadow:0 0 16px currentColor}
+.role b{font-size:13px}.role span{margin-left:auto;color:#6f7588;font-size:11px}
+
+.pricing{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:30px
+}
+.price{
+  position:relative;padding:28px;border-radius:28px;min-height:380px;
+  border:1px solid rgba(255,255,255,.10);
+  background:linear-gradient(145deg,#111219,#08090e);
+  overflow:hidden;box-shadow:0 25px 70px rgba(0,0,0,.38)
+}
+.price.featured{border-color:rgba(65,223,255,.38);box-shadow:0 0 65px rgba(27,210,255,.13),0 25px 70px rgba(0,0,0,.4)}
+.price:before{
+  content:"";position:absolute;width:300px;height:150px;left:50%;bottom:-100px;transform:translateX(-50%);
+  background:var(--price-glow);filter:blur(35px)
+}
+.badge{
+  position:absolute;right:20px;top:20px;font-size:10px;font-weight:800;
+  padding:6px 9px;border-radius:999px;background:rgba(53,238,181,.12);color:#5cf0bd;
+  border:1px solid rgba(53,238,181,.25)
+}
+.price h3{font-size:23px;margin:0}
+.price .sub{color:#707688;font-size:12px;margin:7px 0 24px}
+.amount{font-size:42px;font-weight:850;letter-spacing:-.04em}
+.amount small{font-size:12px;color:#74798b;font-weight:500}
+.features{margin:25px 0;display:grid;gap:13px}
+.features div{color:#a0a5b5;font-size:13px}
+.features div:before{content:"✓";color:#50e4bb;margin-right:9px}
+.price .btn{width:100%;justify-content:center;margin-top:8px}
+
+.cta{
+  margin:110px auto 70px;text-align:center;padding:80px 25px;
+  border-radius:34px;position:relative;overflow:hidden;
+  background:radial-gradient(circle at 50% 20%,rgba(100,70,255,.16),transparent 55%),rgba(9,10,15,.7);
+  border:1px solid rgba(255,255,255,.10);box-shadow:inset 0 1px rgba(255,255,255,.05),0 30px 90px rgba(0,0,0,.4)
+}
+.cta:before{
+  content:"";position:absolute;width:420px;height:140px;left:50%;bottom:-100px;transform:translateX(-50%);
+  background:linear-gradient(90deg,#7c3cff,#27d9ff,#ff35d0);filter:blur(45px);opacity:.45
+}
+.cta h2{margin:0 auto 12px;position:relative}
+.cta p{color:#858b9e;position:relative}
+footer{width:min(1120px,calc(100% - 36px));margin:auto;padding:0 0 35px;color:#5f6576;font-size:12px;display:flex;justify-content:space-between}
+
+@media(max-width:850px){
+  .navlinks{display:none}
+  .cards,.pricing{grid-template-columns:1fr}
+  .showcase{grid-template-columns:1fr}
+  .hero{min-height:760px}
+}
+@media(max-width:520px){
+  section{width:min(100% - 24px,1120px)}
+  nav{top:10px;width:calc(100% - 20px)}
+  .hero{padding-top:130px}
+  h1{font-size:52px}
+  .panel{padding:24px;min-height:410px}
+  .mockup{left:20px;right:20px}
+  .roles{grid-template-columns:1fr}
+  footer{width:calc(100% - 24px);flex-direction:column;gap:10px}
+}
+</style>
+</head>
+<body>
+<div class="noise"></div>
+<div class="lights"><div class="light l1"></div><div class="light l2"></div><div class="light l3"></div></div>
+
+<nav>
+  <div class="brand">X.<span>Business</span></div>
+  <div class="navlinks">
+    <a href="#services">Services</a>
+    <a href="#showcase">Portfolio</a>
+    <a href="#plans">Packages</a>
+  </div>
+  <a class="navbtn" href="#contact">Let's Talk ↗</a>
+</nav>
+
+<main>
+<section class="hero">
+  <div class="shooting-stars">
+    <i class="star"></i><i class="star"></i><i class="star"></i><i class="star"></i>
+  </div>
+  <div class="hero-orb"></div>
+  <div style="position:relative">
+    <div class="eyebrow"><span class="dot"></span> Discord Server Developer</div>
+    <h1>Build a server that feels <span class="gradient-text">different.</span></h1>
+    <p>
+      Building, improving & revamping Discord servers for communities, companies,
+      brands and projects — with clean structure, custom systems and a premium visual identity.
+    </p>
+    <div class="hero-actions">
+      <a class="btn primary" href="#contact">Start a Project ↗</a>
+      <a class="btn secondary" href="#showcase">View Portfolio ↓</a>
+    </div>
+  </div>
+</section>
+
+<section id="services">
+  <div class="section-head">
+    <div class="kicker">What I do</div>
+    <h2>Everything your server needs.</h2>
+    <p>From the first channel to the final detail — every part is structured to look professional and work smoothly.</p>
+  </div>
+
+  <div class="cards">
+    <article class="card purple"><div class="icon">◈</div><h3>Server Development</h3><p>Complete server setup, organization, categories, channels and a clean professional structure.</p><span class="arrow">↗</span></article>
+    <article class="card blue"><div class="icon">✦</div><h3>Custom Roles</h3><p>Unique role hierarchy, permissions and visual role systems designed around your community.</p><span class="arrow">↗</span></article>
+    <article class="card green"><div class="icon">⌘</div><h3>Bots & Automation</h3><p>Useful bots, moderation, automation and systems that make your server easier to manage.</p><span class="arrow">↗</span></article>
+    <article class="card orange"><div class="icon">◇</div><h3>Security & Management</h3><p>Permissions and management systems built with clarity, control and safety in mind.</p><span class="arrow">↗</span></article>
+    <article class="card pink"><div class="icon">✧</div><h3>Unique Branding</h3><p>A consistent visual identity with custom naming, symbols, colors and presentation.</p><span class="arrow">↗</span></article>
+    <article class="card cyan"><div class="icon">↗</div><h3>Revamp & Improve</h3><p>Already have a server? I can restructure and redesign it without losing what matters.</p><span class="arrow">↗</span></article>
+  </div>
+</section>
+
+<section id="showcase" class="showcase">
+  <div class="panel" style="--panel-glow:rgba(116,67,255,.55)">
+    <div class="kicker">Server structure</div>
+    <h3>Designed down to the smallest detail.</h3>
+    <p>Clean categories, premium role hierarchy, intuitive channels and a structure that feels intentional — not copied.</p>
+    <div class="mockup">
+      <div class="mock-lines">
+        <div class="mock-line"></div><div class="mock-line"></div><div class="mock-line"></div>
+        <div class="mock-line"></div><div class="mock-line"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel" style="--panel-glow:rgba(35,226,255,.45)">
+    <div class="kicker">Role system</div>
+    <h3>Gradient roles. Clear hierarchy.</h3>
+    <p>A polished role system inspired by the premium neon UI style you provided.</p>
+    <div class="roles">
+      <div class="role"><i style="color:#ff3d55"></i><b>Founder</b><span>01</span></div>
+      <div class="role"><i style="color:#7867ff"></i><b>Director</b><span>02</span></div>
+      <div class="role"><i style="color:#ff39d0"></i><b>Moderator</b><span>03</span></div>
+      <div class="role"><i style="color:#29d9ff"></i><b>Staff</b><span>04</span></div>
+      <div class="role"><i style="color:#3df49c"></i><b>Supporter</b><span>05</span></div>
+      <div class="role"><i style="color:#ffc83d"></i><b>VIP</b><span>06</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="plans">
+  <div class="section-head" style="text-align:center">
+    <div class="kicker">Available packages</div>
+    <h2>Choose your project.</h2>
+    <p style="margin:auto">Every project is paid and tailored to the actual requirements.</p>
+  </div>
+
+  <div class="pricing">
+    <article class="price" style="--price-glow:rgba(124,60,255,.45)">
+      <h3>Setup</h3><div class="sub">For a clean foundation</div>
+      <div class="amount">Custom <small>/ quote</small></div>
+      <div class="features"><div>Server structure</div><div>Channels & categories</div><div>Basic permissions</div><div>Clean organization</div></div>
+      <a class="btn secondary" href="#contact">Request Package</a>
+    </article>
+    <article class="price featured" style="--price-glow:rgba(38,230,255,.55)">
+      <span class="badge">MOST POPULAR</span>
+      <h3>Professional</h3><div class="sub">For serious communities</div>
+      <div class="amount">Custom <small>/ quote</small></div>
+      <div class="features"><div>Everything in Setup</div><div>Custom roles & hierarchy</div><div>Bots & automation</div><div>Security & management</div></div>
+      <a class="btn primary" href="#contact">Request Package</a>
+    </article>
+    <article class="price" style="--price-glow:rgba(255,53,208,.48)">
+      <h3>Premium</h3><div class="sub">For full transformation</div>
+      <div class="amount">Custom <small>/ quote</small></div>
+      <div class="features"><div>Complete server revamp</div><div>Unique branding</div><div>Advanced systems</div><div>Personalized design</div></div>
+      <a class="btn secondary" href="#contact">Request Package</a>
+    </article>
+  </div>
+</section>
+
+<section id="contact" class="cta">
+  <div class="kicker">Ready when you are</div>
+  <h2>Let's build something <span class="gradient-text">worth joining.</span></h2>
+  <p>Tell me what you need, and I'll suggest the best approach for your server.</p>
+  <div class="hero-actions">
+    <a class="btn primary" href="mailto:your@email.com">Contact Me ↗</a>
+    <a class="btn secondary" href="#services">Explore Services</a>
+  </div>
+</section>
+</main>
+
+<footer>
+  <span>© 2026 X.Business — Discord Server Development</span>
+  <span>Built with a dark neon aesthetic.</span>
+</footer>
+
+<script>
+document.querySelectorAll('.card').forEach(card=>{
+  card.addEventListener('pointermove',e=>{
+    const r=card.getBoundingClientRect();
+    const x=e.clientX-r.left, y=e.clientY-r.top;
+    const rx=((y/r.height)-.5)*-5;
+    const ry=((x/r.width)-.5)*7;
+    card.style.transform=`translateY(-8px) rotateX(${rx}deg) rotateY(${ry}deg)`;
+  });
+  card.addEventListener('pointerleave',()=>card.style.transform='');
+});
+</script>
+</body>
+</html>
